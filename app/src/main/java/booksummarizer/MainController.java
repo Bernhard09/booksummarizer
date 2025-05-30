@@ -1,0 +1,66 @@
+package booksummarizer;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MainController {
+    @FXML
+    private Label welcomeLabel; // This was from the initial setup
+
+    @FXML
+    private Button loadBookButton;
+
+    @FXML
+    private Label fileNameLabel;
+
+    @FXML
+    private TextArea originalContentTextArea;
+
+    // This method is automatically called after the FXML file has been loaded
+    @FXML
+    public void initialize() {
+        welcomeLabel.setText("Book Summarizer V1"); // You can change the welcome text
+        System.out.println("MainController initialized and ready.");
+    }
+
+    @FXML
+    private void handleLoadBookAction() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Text File");
+        
+        // Set extension filter for .txt files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show open file dialog. The 'loadBookButton' can be used to get the window (Stage)
+        Stage stage = (Stage) loadBookButton.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            fileNameLabel.setText("Selected file: " + selectedFile.getName());
+            try {
+                // Read content from the selected file (simple way for smaller files)
+                String content = new String(Files.readAllBytes(Paths.get(selectedFile.toURI())));
+                originalContentTextArea.setText(content);
+            } catch (IOException e) {
+                e.printStackTrace(); // Basic error handling
+                originalContentTextArea.setText("Error: Could not read file.\n" + e.getMessage());
+                fileNameLabel.setText("Error loading file.");
+            }
+        } else {
+            fileNameLabel.setText("File selection cancelled.");
+            // originalContentTextArea.clear(); // Optionally clear if no file is selected
+        }
+    }
+}
