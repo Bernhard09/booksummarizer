@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -50,7 +51,7 @@ public class MainController {
             fileNameLabel.setText("Selected file: " + selectedFile.getName());
             try {
                 // Read content from the selected file 
-                String content = new String(Files.readAllBytes(Paths.get(selectedFile.toURI())));
+                String content = readTextContent(selectedFile);
                 originalContentTextArea.setText(content);
             } catch (IOException e) {
                 e.printStackTrace(); // Basic error handling
@@ -62,4 +63,19 @@ public class MainController {
             originalContentTextArea.clear();
         }
     }
+
+    // Retrieve content from .txt file
+    private String readTextContent(File file) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(file.toURI())), StandardCharsets.UTF_8);
+    }
+
+    // Retrieve content from .pdf file
+    // private String readPdfContent(File file) throws IOException {
+        
+    // }
+
+    // Retrieve content from .epub file
+    // private String readEpubContent(File file) throws IOException {
+
+    // }
 }
