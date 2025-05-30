@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 
 public class MainController {
     @FXML
-    private Label welcomeLabel; // This was from the initial setup
+    private Label welcomeLabel;
 
     @FXML
     private Button loadBookButton;
@@ -43,14 +43,13 @@ public class MainController {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // Show open file dialog. The 'loadBookButton' can be used to get the window (Stage)
         Stage stage = (Stage) loadBookButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
             fileNameLabel.setText("Selected file: " + selectedFile.getName());
             try {
-                // Read content from the selected file (simple way for smaller files)
+                // Read content from the selected file 
                 String content = new String(Files.readAllBytes(Paths.get(selectedFile.toURI())));
                 originalContentTextArea.setText(content);
             } catch (IOException e) {
@@ -60,7 +59,7 @@ public class MainController {
             }
         } else {
             fileNameLabel.setText("File selection cancelled.");
-            // originalContentTextArea.clear(); // Optionally clear if no file is selected
+            originalContentTextArea.clear();
         }
     }
 }
